@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PensionSystem.Domain\PensionSystem.Domain.csproj" />
+      <ProjectReference Include="..\PensionSystem.Infrastructure\PensionSystem.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
