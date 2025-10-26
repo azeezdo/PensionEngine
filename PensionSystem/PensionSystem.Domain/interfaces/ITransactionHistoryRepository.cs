@@ -1,6 +1,8 @@
+using PensionSystem.Domain.Entities;
+
 namespace PensionSystem.Domain.interfaces;
 
-public interface ITransactionHistoryRepository
+public interface ITransactionHistoryRepository: IGenericRepository<TransactionHistory>
 {
     
 }
