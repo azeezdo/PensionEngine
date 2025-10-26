@@ -1,10 +1,15 @@
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using PensionSystem.Domain.interfaces;
+using PensionSystem.Infrastructure.Data;
+
 namespace PensionSystem.Infrastructure.Repositories;
 
  public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly PensionDBContext _ctx;
+        protected readonly PensionDbContext _ctx;
         protected readonly DbSet<T> _dbSet;
-        public GenericRepository(PensionDBContext ctx)
+        public GenericRepository(PensionDbContext ctx)
         {
             _ctx = ctx;
             _dbSet = ctx.Set<T>();
