@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using PensionSystem.API.Extension;
 using PensionSystem.API.Middleware;
 using PensionSystem.Infrastructure.HangFire;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,7 @@ builder.Services.AddApiVersioning(options => {
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.DefaultApiVersion = new ApiVersion(1, 0);
 });
+
 
 var app = builder.Build();
 
