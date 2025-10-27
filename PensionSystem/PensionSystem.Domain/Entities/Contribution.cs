@@ -18,5 +18,6 @@ public class Contribution : BaseEntity
         Amount = amount;
         ContributionDate = contributionDate;
         ReferenceNumber = referenceNumber;
+        CreatedAt = DateTime.UtcNow;
     }
 }

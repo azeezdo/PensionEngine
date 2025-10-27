@@ -1,9 +1,10 @@
 using PensionSystem.Domain.Entities;
 using PensionSystem.Domain.interfaces;
+using PensionSystem.Domain.interfaces.IService;
 
 namespace PensionSystem.Application.service;
 
-public class BenefitService
+public class BenefitService : IBenefitService
 {
     private readonly IUnitofWork _uow;
     public BenefitService(IUnitofWork uow) => _uow = uow;

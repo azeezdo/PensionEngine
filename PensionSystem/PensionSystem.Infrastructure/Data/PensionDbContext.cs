@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using PensionSystem.Domain.Entities;
 
@@ -57,7 +58,8 @@ public class PensionDbContext: DbContext
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
             {
                 var action = entry.State == EntityState.Added ? "Created" : entry.State == EntityState.Modified ? "Updated" : "Deleted";
-                var hist = new TransactionHistory(entry.Entity.Id, entry.Entity.GetType().Name, action, "{}") { OccurredAt = now };
+                var json = JsonSerializer.Serialize(entry);
+                var hist = new TransactionHistory(entry.Entity.Id, entry.Entity.GetType().Name, action, json);
                 TransactionHistories.Add(hist);
             }
         }

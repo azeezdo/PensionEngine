@@ -3,6 +3,7 @@ using PensionSystem.Application.service;
 using PensionSystem.Domain.interfaces;
 using PensionSystem.Infrastructure.Data;
 using PensionSystem.Infrastructure.Unitofwork;
+using PensionSystem.Infrastructure.HangFire;
 
 namespace PensionSystem.API.Extension;
 

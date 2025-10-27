@@ -22,6 +22,7 @@ public class Member : BaseEntity
         DateOfBirth = dateOfBirth;
         Email = email;
         PhoneNumber = phoneNumber;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public void Update(string firstName, string lastName, DateOnly dateOfBirth, string email, string? phoneNumber)
@@ -31,6 +32,7 @@ public class Member : BaseEntity
         DateOfBirth = dateOfBirth;
         Email = email;
         PhoneNumber = phoneNumber;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void SoftDelete() => IsDeleted = true;

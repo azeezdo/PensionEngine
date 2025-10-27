@@ -1,44 +1,48 @@
+using FluentValidation.AspNetCore;
+using Hangfire;
+using Microsoft.AspNetCore.Mvc;
+using PensionSystem.API.Extension;
+using PensionSystem.API.Middleware;
+using PensionSystem.Infrastructure.HangFire;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var conn = builder.Configuration.GetConnectionString("DefaultConnection") ??
+           "Server=.;Database = PensionDb; Integrated Security = true; TrustServerCertificate = True;";
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddPensionServices(conn);
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddHangfire(cfg => cfg.UseSqlServerStorage(conn));
+builder.Services.AddHangfireServer();
+
+builder.Services.AddApiVersioning(options => {
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
+app.UseHangfireDashboard("/hangfire");
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapControllers();
 
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+RecurringJob.AddOrUpdate<BackgroundJobsService>("monthly-validation", job => job.RunMonthlyValidation(), Cron.Monthly);
+RecurringJob.AddOrUpdate<BackgroundJobsService>("benefit-update", job => job.UpdateBenefitEligibility(), Cron.Monthly);
+RecurringJob.AddOrUpdate<BackgroundJobsService>("interest-apply", job => job.ApplyMonthlyInterest(), Cron.Monthly);
+RecurringJob.AddOrUpdate<BackgroundJobsService>("generate-statements", job => job.GenerateMemberStatements(), Cron.Monthly);
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
