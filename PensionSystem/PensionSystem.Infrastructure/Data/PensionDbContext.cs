@@ -1,6 +1,7 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using PensionSystem.Domain.Entities;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace PensionSystem.Infrastructure.Data;
 
@@ -36,6 +37,14 @@ public class PensionDbContext: DbContext
             b.HasIndex(x => new { x.MemberId, x.ContributionDate });
         });
 
+
+        modelBuilder.Entity<Employer>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.Property(x => x.CompanyName).IsRequired().HasMaxLength(100);
+            b.Property(x => x.RegistrationNumber).IsRequired().HasMaxLength(100);
+        });
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -62,6 +71,7 @@ public class PensionDbContext: DbContext
                 var hist = new TransactionHistory(entry.Entity.Id, entry.Entity.GetType().Name, action, json);
                 TransactionHistories.Add(hist);
             }
+            
         }
 
         return await base.SaveChangesAsync(cancellationToken);

@@ -4,6 +4,7 @@ using PensionSystem.Domain.interfaces;
 using PensionSystem.Infrastructure.Data;
 using PensionSystem.Infrastructure.Unitofwork;
 using PensionSystem.Infrastructure.HangFire;
+using PensionSystem.Domain.interfaces.IService;
 
 namespace PensionSystem.API.Extension;
 
@@ -15,9 +16,9 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUnitofWork, UnitOfWork>();
 
-        services.AddScoped<MemberService>();
-        services.AddScoped<ContributionService>();
-        services.AddScoped<BenefitService>();
+        services.AddScoped<IMemberService, MemberService>();
+        services.AddScoped<IContributionService, ContributionService>();
+        services.AddScoped<IBenefitService, BenefitService>();
 
         services.AddScoped<MonthlyContributionRule>();
         services.AddScoped<BackgroundJobsService>();

@@ -18,12 +18,11 @@ public class MemberService : IMemberService
         try
         {
             var existMember = await _uow.Members.GetByExpressionAsync(x => x.Email == dto.Email);
-            if (existMember != null)
+            if (existMember == null)
             {
                 var member = new Member(dto.FirstName, dto.LastName, dto.DateOfBirth, dto.Email, dto.PhoneNumber);
                 await _uow.Members.AddAsync(member);
-                await _uow.CommitAsync();
-                //return member.Id;
+                await _uow.CompleteAsync();
                 res = new CustomResponse(200,  "Member Successfully Created", null);
             }
             res = new CustomResponse(404, $"Member with email {dto.Email} not found", null);
@@ -33,7 +32,6 @@ public class MemberService : IMemberService
         {
            
         }
-
         return res;
     }
     public async Task<CustomResponse> UpdateMemberAsync(Guid id, UpdateMemberDto dto)
@@ -48,7 +46,7 @@ public class MemberService : IMemberService
             }
             member.Update(dto.FirstName, dto.LastName, dto.DateOfBirth, dto.Email, dto.PhoneNumber);
             _uow.Members.Update(member);
-            await _uow.CommitAsync();
+            await _uow.CompleteAsync();
             res = new CustomResponse(200,  "Member Successfully Updated", null);
         }
         catch (Exception e)
@@ -70,7 +68,7 @@ public class MemberService : IMemberService
             }
             member.SoftDelete();
             _uow.Members.Update(member);
-            await _uow.CommitAsync();
+            await _uow.CompleteAsync();
             res = new CustomResponse(200,  "Member Successfully Deleted", null);
         }
         catch (Exception e)

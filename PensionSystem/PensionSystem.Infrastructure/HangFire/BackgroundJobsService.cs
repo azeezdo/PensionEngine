@@ -22,7 +22,7 @@ public class BackgroundJobsService
             {
                 _log.LogInformation("Validating monthly contributions for member {MemberId}", m.Id);
             }
-            await _uow.CommitAsync();
+            await _uow.CompleteAsync();
         }
         catch (Exception ex)
         {
