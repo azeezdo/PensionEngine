@@ -35,6 +35,13 @@ public class PensionDbContext: DbContext
             b.Property(x => x.ReferenceNumber).IsRequired().HasMaxLength(100);
             b.HasIndex(x => new { x.MemberId, x.ContributionDate });
         });
+        
+        modelBuilder.Entity<Employer>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.Property(x => x.CompanyName).IsRequired().HasMaxLength(100);
+            b.Property(x => x.RegistrationNumber).IsRequired().HasMaxLength(100);
+        });
 
         base.OnModelCreating(modelBuilder);
     }
