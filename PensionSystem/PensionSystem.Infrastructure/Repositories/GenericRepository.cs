@@ -33,4 +33,8 @@ namespace PensionSystem.Infrastructure.Repositories;
         {
             return await _dbSet.FirstOrDefaultAsync(expression);
         }
+        public async Task<IReadOnlyList<T>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
     }

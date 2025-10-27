@@ -12,6 +12,7 @@ public class Employer : BaseEntity
     {
         CompanyName = companyName;
         RegistrationNumber = registrationNumber;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public void Deactivate() => IsActive = false;

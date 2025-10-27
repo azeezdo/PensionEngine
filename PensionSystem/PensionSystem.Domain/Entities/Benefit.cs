@@ -17,5 +17,6 @@ public class Benefit : BaseEntity
         CalculationDate = calculationDate;
         EligibilityStatus = eligibilityStatus;
         Amount = amount;
+        CreatedAt = DateTime.UtcNow;
     }
 }

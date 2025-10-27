@@ -16,5 +16,6 @@ public class TransactionHistory : BaseEntity
         EntityType = entityType;
         Action = action;
         ChangesJson = changesJson;
+        CreatedAt = DateTime.UtcNow;
     }
 }

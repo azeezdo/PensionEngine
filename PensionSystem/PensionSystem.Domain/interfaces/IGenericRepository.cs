@@ -10,4 +10,5 @@ public interface IGenericRepository<T> where T : class
     void Remove(T entity);
     Task<IEnumerable<T>> ListAsync(Expression<Func<T, bool>>? filter = null, CancellationToken ct = default);
     Task<T> GetByExpressionAsync(Expression<Func<T, bool>> expression);
+    Task<IReadOnlyList<T>> GetAllAsync();
 }

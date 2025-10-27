@@ -2,10 +2,12 @@ using PensionSystem.Application.DTOs;
 using PensionSystem.Domain.Entities;
 using PensionSystem.Domain.Enums;
 using PensionSystem.Domain.interfaces;
+using PensionSystem.Domain.interfaces.IService;
+using PensionSystem.Domain.Models;
 
 namespace PensionSystem.Application.service;
 
-public class ContributionService
+public class ContributionService : IContributionService
 {
     private readonly IUnitofWork _uow;
     private readonly MonthlyContributionRule _monthlyRule;
@@ -16,17 +18,30 @@ public class ContributionService
         _monthlyRule = monthlyRule;
     }
 
-    public async Task<Guid> AddContributionAsync(CreateContributionDto dto)
+    public async Task<CustomResponse> AddContributionAsync(CreateContributionDto dto)
     {
-        if (dto.ContributionType == ContributionType.Monthly)
+        CustomResponse res = null;
+        try
         {
-            var ok = await _monthlyRule.CanAddMonthlyContributionAsync(dto.MemberId, dto.ContributionDate);
-            if (!ok) throw new InvalidOperationException("Member already has a monthly contribution for this calendar month.");
-        }
+            if (dto.ContributionType == ContributionType.Monthly)
+            {
+                var result  = await _monthlyRule.CanAddMonthlyContributionAsync(dto.MemberId, dto.ContributionDate);
+                if (!result)
+                {
+                    res = new CustomResponse(400, "Member already has a monthly contribution for this calendar month");
+                }
+            }
 
-        var c = new Contribution(dto.MemberId, dto.ContributionType, dto.Amount, dto.ContributionDate, dto.ReferenceNumber);
-        await _uow.Contributions.AddAsync(c);
-        await _uow.CommitAsync();
-        return c.Id;
+            var contribution = new Contribution(dto.MemberId, dto.ContributionType, dto.Amount, dto.ContributionDate,
+                dto.ReferenceNumber);
+            await _uow.Contributions.AddAsync(contribution);
+            await _uow.CommitAsync();
+           res =  new CustomResponse(200, "Contribution Successfully added");
+        }
+        catch (Exception e)
+        {
+            
+        }
+        return res;
     }
 }
