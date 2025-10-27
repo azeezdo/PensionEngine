@@ -17,7 +17,7 @@ public class BackgroundJobsService
     {
         try
         {
-            var members = await _uow.Members.ListAsync(null);
+            var members = await _uow.Members.GetAllAsync();
             foreach (var m in members)
             {
                 _log.LogInformation("Validating monthly contributions for member {MemberId}", m.Id);

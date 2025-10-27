@@ -1,10 +1,7 @@
 namespace PensionSystem.Domain.interfaces;
 
-public interface IUnitofWork 
+public interface IUnitofWork :IDisposable
 {
-   /* IGenericRepository<TEntity> repository<TEntity>() where TEntity : class;
-    Task<int> CompleteAsync();*/
-    //DapperGenericRepository<T> GetRepository<T>() where T : class;
     IMemberRepository Members { get; }
     IContributionRepository Contributions { get; }
     IEmployerRepository Employers { get; }

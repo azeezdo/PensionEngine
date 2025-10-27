@@ -7,34 +7,45 @@ namespace PensionSystem.Infrastructure.Repositories;
 
  public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly PensionDbContext _ctx;
-       // protected readonly DbSet<T> _dbSet;
+        protected readonly PensionDbContext _dbContext;
         public GenericRepository(PensionDbContext ctx)
         {
-            _ctx = ctx;
-            //_dbSet = ctx.Set<T>();
+        _dbContext = ctx;
         }
 
-        public virtual async Task AddAsync(T entity, CancellationToken ct = default) => await _ctx.AddAsync<T>(entity, ct);
-
-        public virtual void Remove(T entity) => _ctx.Set<T>().Remove(entity);
-
-        public virtual void Update(T entity) => _ctx.Set<T>().Update(entity);
-
-        public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken ct = default) => await _ctx.Set<T>().FindAsync(new object[] { id }, ct) as T;
-
-        public virtual async Task<IEnumerable<T>> ListAsync(Expression<Func<T, bool>>? filter = null, CancellationToken ct = default)
-        {
-            IQueryable<T> q = _ctx.Set<T>();
-            if (filter != null) q = q.Where(filter);
-            return await q.ToListAsync(ct);
-        }
-        public async Task<T> GetByExpressionAsync(Expression<Func<T, bool>> expression)
-        {
-            return await _ctx.Set<T>().FirstOrDefaultAsync(expression);
-        }
-        public async Task<IReadOnlyList<T>> GetAllAsync()
-        {
-            return await _ctx.Set<T>().ToListAsync();
-        }
+    public async Task AddAsync(T entity)
+    {
+        await _dbContext.AddAsync<T>(entity);
     }
+    public void Delete(T entity)
+    {
+        _dbContext.Set<T>().Remove(entity);
+    }
+    public async Task DeleteAsync(T entity)
+    {
+        await Task.Run(() => _dbContext.Set<T>().Remove(entity));
+    }
+    public async Task<IReadOnlyList<T>> GetAllAsync()
+    {
+        return await _dbContext.Set<T>().ToListAsync();
+    }
+    public async Task<T> GetByExpressionAsync(Expression<Func<T, bool>> expression)
+    {
+        return await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
+    }
+
+    public async Task<T> GetByIdAsync(Guid id)
+    {
+        return await _dbContext.Set<T>().FindAsync(id);
+    }
+    public void Update(T entity)
+    {
+        _dbContext.Attach<T>(entity);
+        _dbContext.Entry(entity).State = EntityState.Modified;
+    }
+    public async Task UpdateAsync(T entity)
+    {
+        await Task.Run(() => _dbContext.Attach<T>(entity));
+        _dbContext.Entry(entity).State = EntityState.Modified;
+    }
+}

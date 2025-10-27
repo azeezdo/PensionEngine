@@ -15,11 +15,11 @@ public class MemberRepository: GenericRepository<Member>, IMemberRepository
     
     public async Task<Member?> GetByEmailAsync(string email, CancellationToken ct = default)
     {
-        return await _ctx.Members.FirstOrDefaultAsync(m => m.Email == email, ct);
+        return await _dbContext.Members.FirstOrDefaultAsync(m => m.Email == email, ct);
     }
 
     public async Task<IEnumerable<Member>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default)
     {
-        return await _ctx.Members.Where(m => ids.Contains(m.Id)).ToListAsync(ct);
+        return await _dbContext.Members.Where(m => ids.Contains(m.Id)).ToListAsync(ct);
     }
 }
