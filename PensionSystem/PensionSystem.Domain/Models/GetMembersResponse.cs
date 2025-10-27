@@ -10,3 +10,11 @@ public class GetMembersResponse
     public string? PhoneNumber { get; set; }
     public Guid EmployerId  { get; set; }
 }
+
+public class GetEmployersResponse
+{
+    public Guid EmployerId { get; set; }
+    public string CompanyName { get; set; }
+    public string RegistrationNumber { get; set; }
+    
+}

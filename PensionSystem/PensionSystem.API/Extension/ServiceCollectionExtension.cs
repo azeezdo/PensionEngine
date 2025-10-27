@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMemberService, MemberService>();
         services.AddScoped<IContributionService, ContributionService>();
         services.AddScoped<IBenefitService, BenefitService>();
+        services.AddScoped<IEmployerService, EmployerService>();
 
         services.AddScoped<MonthlyContributionRule>();
         services.AddScoped<BackgroundJobsService>();

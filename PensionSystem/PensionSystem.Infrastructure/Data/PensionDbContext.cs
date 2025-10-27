@@ -12,11 +12,17 @@ public class PensionDbContext: DbContext
         
     }
 
-    public DbSet<Member> Members => Set<Member>();
-    public DbSet<Contribution> Contributions => Set<Contribution>();
-    public DbSet<Employer> Employers => Set<Employer>();
-    public DbSet<Benefit> Benefits => Set<Benefit>();
-    public DbSet<TransactionHistory> TransactionHistories => Set<TransactionHistory>();
+    /* public DbSet<Member> Members => Set<Member>();
+     public DbSet<Contribution> Contributions => Set<Contribution>();
+     public DbSet<Employer> Employers => Set<Employer>();
+     public DbSet<Benefit> Benefits => Set<Benefit>();
+     public DbSet<TransactionHistory> TransactionHistories => Set<TransactionHistory>();*/
+
+    public DbSet<Member> Members { get; set; }
+    public DbSet<Contribution> Contributions { get; set; }
+    public DbSet<Employer> Employera { get; set; }
+    public DbSet<Benefit> Benefits { get; set; }
+    public DbSet<TransactionHistory> TransactionHistories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -74,7 +80,7 @@ public class PensionDbContext: DbContext
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
             {
                 var action = entry.State == EntityState.Added ? "Created" : entry.State == EntityState.Modified ? "Updated" : "Deleted";
-                var json = JsonSerializer.Serialize(entry);
+                var json = JsonSerializer.Serialize(entry.Entity);
                 var hist = new TransactionHistory(entry.Entity.Id, entry.Entity.GetType().Name, action, json);
                 TransactionHistories.Add(hist);
             }
