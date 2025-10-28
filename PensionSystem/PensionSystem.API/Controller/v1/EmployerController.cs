@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PensionSystem.Application.DTOs;
-using PensionSystem.Domain.interfaces.IService;
+using global::PensionSystem.Domain.interfaces.IService;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using PensionSystem.Domain.Models;
 
 namespace PensionSystem.API.Controller.v1
 {

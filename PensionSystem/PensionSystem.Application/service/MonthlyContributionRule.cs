@@ -10,6 +10,6 @@ public class MonthlyContributionRule
     public async Task<bool> CanAddMonthlyContributionAsync(Guid memberId, DateTime date)
     {
         // check repository for existing monthly contribution in same calendar month
-        return !await _uow.Contributions.ExistsMonthlyContributionForMemberInMonth(memberId, date);
+        return !await _uow.contributionRepo.ExistsMonthlyContributionForMemberInMonth(memberId, date);
     }
 }

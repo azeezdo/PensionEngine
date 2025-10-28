@@ -1,4 +1,4 @@
-namespace PensionSystem.Application.DTOs;
+namespace PensionSystem.Domain.Models;
 
 public record MemberDto(Guid Id, string FirstName, string LastName, DateOnly DateOfBirth, string Email, string? PhoneNumber);
 

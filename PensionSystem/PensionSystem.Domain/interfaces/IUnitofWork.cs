@@ -1,12 +1,15 @@
 namespace PensionSystem.Domain.interfaces;
 
-public interface IUnitofWork :IDisposable
+public interface IUnitofWork 
 {
-    IMemberRepository Members { get; }
-    IContributionRepository Contributions { get; }
-    IEmployerRepository Employers { get; }
-    ITransactionHistoryRepository TransactionHistories { get; }
-    IBenefitRepository Benefits { get; }
-    Task<int> CommitAsync(CancellationToken ct = default);
+    IGenericRepository<TEntity> repository<TEntity>() where TEntity : class;
+    Task<int> CompleteAsync();
+
+    IMemberRepository memberRepo { get; }
+    IContributionRepository contributionRepo { get; }
+    IEmployerRepository employerRepo { get; }
+    IBenefitRepository benefitRepo { get; }
+    ITransactionHistoryRepository transactionRepo { get; }
+   
 }
 

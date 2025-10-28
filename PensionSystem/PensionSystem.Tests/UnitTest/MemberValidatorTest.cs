@@ -1,5 +1,6 @@
 using PensionSystem.Application.DTOs;
 using PensionSystem.Application.Validators;
+using PensionSystem.Domain.Models;
 
 namespace PensionSystem.Tests.UnitTest;
 

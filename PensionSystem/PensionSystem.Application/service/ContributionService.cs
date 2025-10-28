@@ -34,8 +34,8 @@ public class ContributionService : IContributionService
 
             var contribution = new Contribution(dto.MemberId, dto.ContributionType, dto.Amount, dto.ContributionDate,
                 dto.ReferenceNumber);
-            await _uow.Contributions.AddAsync(contribution);
-            await _uow.CommitAsync();
+            await _uow.contributionRepo.AddAsync(contribution);
+            await _uow.CompleteAsync();
            res =  new CustomResponse(200, "Contribution Successfully added");
         }
         catch (Exception e)

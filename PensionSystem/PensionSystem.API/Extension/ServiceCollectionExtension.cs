@@ -11,10 +11,8 @@ namespace PensionSystem.API.Extension;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddPensionServices(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddPensionServices(this IServiceCollection services)
     {
-        services.AddDbContext<PensionDbContext>(opt => opt.UseSqlServer(connectionString));
-
         services.AddScoped<IUnitofWork, UnitOfWork>();
 
         services.AddScoped<IMemberService, MemberService>();
@@ -33,4 +31,6 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    
 }

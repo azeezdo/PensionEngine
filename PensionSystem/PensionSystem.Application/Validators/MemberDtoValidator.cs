@@ -1,5 +1,6 @@
 using FluentValidation;
 using PensionSystem.Application.DTOs;
+using PensionSystem.Domain.Models;
 
 namespace PensionSystem.Application.Validators;
 

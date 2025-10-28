@@ -14,7 +14,7 @@ public class ContributionBusinessRuleTests
     public async Task MonthlyRule_Allows_When_NoExisting()
     {
         var uow = Substitute.For<IUnitofWork>();
-        uow.Contributions.ExistsMonthlyContributionForMemberInMonth(Arg.Any<Guid>(), Arg.Any<DateTime>()).Returns(false);
+        uow.contributionRepo.ExistsMonthlyContributionForMemberInMonth(Arg.Any<Guid>(), Arg.Any<DateTime>()).Returns(false);
         var rule = new MonthlyContributionRule(uow);
         var ok = await rule.CanAddMonthlyContributionAsync(Guid.NewGuid(), DateTime.UtcNow);
         Assert.IsTrue(ok);

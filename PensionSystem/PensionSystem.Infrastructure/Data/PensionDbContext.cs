@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace PensionSystem.Infrastructure.Data;
 
-public class PensionDbContext: DbContext
+public class PensionDbContext : DbContext
 {
     public PensionDbContext(DbContextOptions<PensionDbContext> options) : base(options)
     {
@@ -20,7 +20,7 @@ public class PensionDbContext: DbContext
 
     public DbSet<Member> Members { get; set; }
     public DbSet<Contribution> Contributions { get; set; }
-    public DbSet<Employer> Employera { get; set; }
+    public DbSet<Employer> Employers { get; set; }
     public DbSet<Benefit> Benefits { get; set; }
     public DbSet<TransactionHistory> TransactionHistories { get; set; }
 
@@ -61,7 +61,7 @@ public class PensionDbContext: DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+  /*  public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var now = DateTime.UtcNow;
 
@@ -88,5 +88,5 @@ public class PensionDbContext: DbContext
         }
 
         return await base.SaveChangesAsync(cancellationToken);
-    }
+    }*/
 }

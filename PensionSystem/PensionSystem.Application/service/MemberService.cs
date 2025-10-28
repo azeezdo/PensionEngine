@@ -17,16 +17,18 @@ public class MemberService : IMemberService
         CustomResponse res = null;
         try
         {
-            var existMember = await _uow.Members.GetByExpressionAsync(x => x.Email == dto.Email);
+            var existMember = await _uow.memberRepo.GetByExpressionAsync(x => x.Email == dto.Email);
             if (existMember == null)
             {
                 var member = new Member(dto.FirstName, dto.LastName, dto.DateOfBirth, dto.Email, dto.PhoneNumber);
-                await _uow.Members.AddAsync(member);
-                await _uow.CommitAsync();
-                res = new CustomResponse(200,  "Member Successfully Created", null);
+                await _uow.memberRepo.AddAsync(member);
+                await _uow.CompleteAsync();
+                res = new CustomResponse(200, "Member Successfully Created", null);
             }
-            res = new CustomResponse(404, $"Member with email {dto.Email} not found", null);
-          
+            else
+            {
+                res = new CustomResponse(404, $"Member with email {dto.Email} not found", null);
+            }
         }
         catch (Exception e)
         {
@@ -39,14 +41,14 @@ public class MemberService : IMemberService
         CustomResponse res = null;
         try
         {
-            var member = await _uow.Members.GetByIdAsync(id);
+            var member = await _uow.memberRepo.GetByIdAsync(id);
             if (member == null)
             {
                 res = new CustomResponse(404, $"Member with id {id} not found", null);
             }
             member.Update(dto.FirstName, dto.LastName, dto.DateOfBirth, dto.Email, dto.PhoneNumber);
-            _uow.Members.Update(member);
-            await _uow.CommitAsync();
+            _uow.memberRepo.Update(member);
+            await _uow.CompleteAsync();
             res = new CustomResponse(200,  "Member Successfully Updated", null);
         }
         catch (Exception e)
@@ -61,14 +63,14 @@ public class MemberService : IMemberService
         CustomResponse res = null;
         try
         {
-            var member = await _uow.Members.GetByIdAsync(id);
+            var member = await _uow.memberRepo.GetByIdAsync(id);
             if (member == null)
             {
                 res =  new CustomResponse(404, $"Member with id {id} not found", null);
             }
             member.SoftDelete();
-            _uow.Members.Update(member);
-            await _uow.CommitAsync();
+            _uow.memberRepo.Update(member);
+            await _uow.CompleteAsync();
             res = new CustomResponse(200,  "Member Successfully Deleted", null);
         }
         catch (Exception e)
@@ -86,7 +88,7 @@ public class MemberService : IMemberService
         
         try
         {
-             members = await _uow.Members.GetAllAsync();
+             members = await _uow.memberRepo.GetAllAsync();
             if (members != null)
             {
                 foreach (var member in members)
@@ -120,7 +122,7 @@ public class MemberService : IMemberService
         CustomResponse res = null;
         try
         {
-            var member = await _uow.Members.GetByIdAsync(memberId);
+            var member = await _uow.memberRepo.GetByIdAsync(memberId);
             if (member != null)
             {
                 var result = new GetMembersResponse

@@ -3,29 +3,48 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using PensionSystem.Domain.interfaces;
 using PensionSystem.Infrastructure.Data;
 using PensionSystem.Infrastructure.Repositories;
+using System;
 using System.Collections;
 
 namespace PensionSystem.Infrastructure.Unitofwork;
 
 public class UnitOfWork : IUnitofWork
 {
-    private readonly PensionDbContext _ctx;
-    private MemberRepository? _memberRepo;
-    private ContributionRepository? _contributionRepo;
-    private EmployerRepository? _employerRepo;
-    private BenefitRepository? _benefitRepo;
-    private  TransactionHistoryRepository? _transactionRepo;
-    
+    public readonly PensionDbContext _dbContext;
+    private Hashtable _repositories;
+    public DatabaseFacade Database => _dbContext.Database;
+    public IMemberRepository memberRepo { get; private set; }
+    public IContributionRepository contributionRepo { get; private set; }
+    public IEmployerRepository employerRepo { get; private set; }
+    public IBenefitRepository benefitRepo { get; private set; }
+    public ITransactionHistoryRepository transactionRepo { get; private set; }
 
-    public IMemberRepository Members => _memberRepo ??= new MemberRepository(_ctx);
-    public IContributionRepository Contributions => _contributionRepo ??= new ContributionRepository(_ctx);
-    public IEmployerRepository Employers => _employerRepo ??= new EmployerRepository(_ctx);
-    public IBenefitRepository Benefits => _benefitRepo ??= new BenefitRepository(_ctx);
-    public ITransactionHistoryRepository TransactionHistories => _transactionRepo ??= new TransactionHistoryRepository(_ctx);
+    public UnitOfWork(PensionDbContext dbContext)
+    {
+        _dbContext = dbContext;
+        memberRepo = new MemberRepository(dbContext);
+        contributionRepo = new ContributionRepository(dbContext);
+        employerRepo = new EmployerRepository(dbContext);
+        benefitRepo = new BenefitRepository(dbContext);
+        transactionRepo = new TransactionHistoryRepository(dbContext);
+    }
 
-    public void Dispose() => _ctx.Dispose();
+    public IGenericRepository<TEntity> repository<TEntity>() where TEntity : class
+    {
+        if (_repositories == null) _repositories = new Hashtable();
+        var Type = typeof(TEntity).Name;
+        if (!_repositories.ContainsKey(Type))
+        {
+            var repositoryType = typeof(GenericRepository<TEntity>);
+            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _dbContext);
+            _repositories.Add(Type, repositoryInstance);
+        }
+        return (IGenericRepository<TEntity>)_repositories[Type];
+    }
 
-    public Task<int> CommitAsync(CancellationToken ct = default) => _ctx.SaveChangesAsync(ct);
+    public async Task<int> CompleteAsync()
+    {
+        return await _dbContext.SaveChangesAsync();
+    }
 
-   
 }

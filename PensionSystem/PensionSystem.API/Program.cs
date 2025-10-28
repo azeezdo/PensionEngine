@@ -20,11 +20,11 @@ var builder = WebApplication.CreateBuilder(args);
 /*var conn = builder.Configuration.GetConnectionString("DefaultConnection") ??
            "Server=.;Database = PensionDb; Integrated Security = true; TrustServerCertificate = True;";*/
 var connectionString = builder.Configuration.GetConnectionString("PensionSystemDB");
-//builder.Services.AddDbContext<PensionDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<PensionDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddPensionServices(connectionString);
+builder.Services.AddPensionServices();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddHangfire(cfg => cfg.UseSqlServerStorage(connectionString));

@@ -17,12 +17,12 @@ public class BackgroundJobsService
     {
         try
         {
-            var members = await _uow.Members.GetAllAsync();
+            var members = await _uow.memberRepo.GetAllAsync();
             foreach (var m in members)
             {
                 _log.LogInformation("Validating monthly contributions for member {MemberId}", m.Id);
             }
-            await _uow.CommitAsync();
+            await _uow.CompleteAsync();
         }
         catch (Exception ex)
         {

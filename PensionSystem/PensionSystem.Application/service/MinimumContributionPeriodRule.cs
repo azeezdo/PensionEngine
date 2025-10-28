@@ -14,7 +14,7 @@ public class MinimumContributionPeriodRule
 
     public async Task<bool> IsEligibleForBenefits(Guid memberId)
     {
-        var sum = await _uow.Contributions.SumContributions(memberId, null);
+        var sum = await _uow.contributionRepo.SumContributions(memberId, null);
         return sum > 0; // simplified; extend to check distinct months
     }
 }

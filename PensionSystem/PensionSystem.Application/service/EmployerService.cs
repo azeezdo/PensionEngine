@@ -24,16 +24,18 @@ namespace PensionSystem.Application.service
             CustomResponse res = null;
             try
             {
-                var existEmployer = await _uow.Employers.GetByExpressionAsync(x => x.RegistrationNumber == dto.RegistrationNumber);
+                var existEmployer = await _uow.employerRepo.GetByExpressionAsync(x => x.RegistrationNumber == dto.RegistrationNumber);
                 if (existEmployer == null)
                 {
                     var employer = new Employer(dto.CompanyName, dto.RegistrationNumber);
-                    await _uow.Employers.AddAsync(employer);
-                    await _uow.CommitAsync();
+                    await _uow.employerRepo.AddAsync(employer);
+                    await _uow.CompleteAsync();
                     res = new CustomResponse(200, "employer Successfully Created", null);
                 }
-                res = new CustomResponse(404, $"employer with email {dto.RegistrationNumber} not found", null);
-
+                else
+                {
+                    res = new CustomResponse(404, $"employer with email {dto.RegistrationNumber} not found", null);
+                }
             }
             catch (Exception e)
             {
@@ -46,14 +48,14 @@ namespace PensionSystem.Application.service
             CustomResponse res = null;
             try
             {
-                var employer = await _uow.Employers.GetByIdAsync(id);
+                var employer = await _uow.employerRepo.GetByIdAsync(id);
                 if (employer == null)
                 {
                     res = new CustomResponse(404, $"employer with id {id} not found", null);
                 }
                 employer.Update(dto.CompanyName, dto.RegistrationNumber);
-                _uow.Employers.Update(employer);
-                await _uow.CommitAsync();
+                _uow.employerRepo.Update(employer);
+                await _uow.CompleteAsync();
                 res = new CustomResponse(200, "employer Successfully Updated", null);
             }
             catch (Exception e)
@@ -68,14 +70,14 @@ namespace PensionSystem.Application.service
             CustomResponse res = null;
             try
             {
-                var employer = await _uow.Employers.GetByIdAsync(id);
+                var employer = await _uow.employerRepo.GetByIdAsync(id);
                 if (employer == null)
                 {
                     res = new CustomResponse(404, $"employer with id {id} not found", null);
                 }
                 employer.SoftDelete();
-                _uow.Employers.Update(employer);
-                await _uow.CommitAsync();
+                _uow.employerRepo.Update(employer);
+                await _uow.CompleteAsync();
                 res = new CustomResponse(200, "employer Successfully Deleted", null);
             }
             catch (Exception e)
@@ -93,7 +95,7 @@ namespace PensionSystem.Application.service
 
             try
             {
-                employers = await _uow.Employers.GetAllAsync();
+                employers = await _uow.employerRepo.GetAllAsync();
                 if (employers != null)
                 {
                     foreach (var employer in employers)
@@ -125,7 +127,7 @@ namespace PensionSystem.Application.service
             CustomResponse res = null;
             try
             {
-                var employer = await _uow.Employers.GetByIdAsync(employerId);
+                var employer = await _uow.employerRepo.GetByIdAsync(employerId);
                 if (employer != null)
                 {
                     var result = new GetEmployersResponse
