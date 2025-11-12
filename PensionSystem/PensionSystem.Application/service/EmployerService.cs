@@ -34,7 +34,7 @@ namespace PensionSystem.Application.service
                 }
                 else
                 {
-                    res = new CustomResponse(404, $"employer with email {dto.RegistrationNumber} not found", null);
+                    res = new CustomResponse(409, $"employer with email {dto.RegistrationNumber} already exist", null);
                 }
             }
             catch (Exception e)

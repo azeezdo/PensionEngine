@@ -27,12 +27,12 @@ public class MemberService : IMemberService
             }
             else
             {
-                res = new CustomResponse(404, $"Member with email {dto.Email} not found", null);
+                res = new CustomResponse(409, $"Member with email {dto.Email} already exist", null);
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-           
+            res = new CustomResponse(500, ex.Message);
         }
         return res;
     }

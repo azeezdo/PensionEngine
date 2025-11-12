@@ -11,13 +11,6 @@ public class PensionDbContext : DbContext
     {
         
     }
-
-    /* public DbSet<Member> Members => Set<Member>();
-     public DbSet<Contribution> Contributions => Set<Contribution>();
-     public DbSet<Employer> Employers => Set<Employer>();
-     public DbSet<Benefit> Benefits => Set<Benefit>();
-     public DbSet<TransactionHistory> TransactionHistories => Set<TransactionHistory>();*/
-
     public DbSet<Member> Members { get; set; }
     public DbSet<Contribution> Contributions { get; set; }
     public DbSet<Employer> Employers { get; set; }
