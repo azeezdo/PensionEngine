@@ -11,13 +11,6 @@ public class PensionDbContext : DbContext
     {
         
     }
-
-    /* public DbSet<Member> Members => Set<Member>();
-     public DbSet<Contribution> Contributions => Set<Contribution>();
-     public DbSet<Employer> Employers => Set<Employer>();
-     public DbSet<Benefit> Benefits => Set<Benefit>();
-     public DbSet<TransactionHistory> TransactionHistories => Set<TransactionHistory>();*/
-
     public DbSet<Member> Members { get; set; }
     public DbSet<Contribution> Contributions { get; set; }
     public DbSet<Employer> Employers { get; set; }
@@ -61,32 +54,5 @@ public class PensionDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-  /*  public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        var now = DateTime.UtcNow;
-
-        foreach (var entry in ChangeTracker.Entries<BaseEntity>())
-        {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.CreatedAt = now;
-                entry.Entity.UpdatedAt = now;
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                entry.Entity.UpdatedAt = now;
-            }
-
-            if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
-            {
-                var action = entry.State == EntityState.Added ? "Created" : entry.State == EntityState.Modified ? "Updated" : "Deleted";
-                var json = JsonSerializer.Serialize(entry.Entity);
-                var hist = new TransactionHistory(entry.Entity.Id, entry.Entity.GetType().Name, action, json);
-                TransactionHistories.Add(hist);
-            }
-            
-        }
-
-        return await base.SaveChangesAsync(cancellationToken);
-    }*/
+ 
 }

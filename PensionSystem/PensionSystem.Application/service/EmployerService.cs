@@ -34,12 +34,12 @@ namespace PensionSystem.Application.service
                 }
                 else
                 {
-                    res = new CustomResponse(404, $"employer with email {dto.RegistrationNumber} not found", null);
+                    res = new CustomResponse(409, $"employer with email {dto.RegistrationNumber} already exist", null);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
+                res = new CustomResponse(500, ex.Message);
             }
             return res;
         }
@@ -58,9 +58,9 @@ namespace PensionSystem.Application.service
                 await _uow.CompleteAsync();
                 res = new CustomResponse(200, "employer Successfully Updated", null);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
+                res = new CustomResponse(500, ex.Message);
             }
             return res;
         }
@@ -80,9 +80,9 @@ namespace PensionSystem.Application.service
                 await _uow.CompleteAsync();
                 res = new CustomResponse(200, "employer Successfully Deleted", null);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
+                res = new CustomResponse(500, ex.Message);
             }
 
             return res;
@@ -116,9 +116,9 @@ namespace PensionSystem.Application.service
                 }
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                res = new CustomResponse(404, $"Members not found", null);
+                res = new CustomResponse(500, ex.Message);
             }
             return res;
         }
@@ -144,9 +144,9 @@ namespace PensionSystem.Application.service
                     res = new CustomResponse(404, $"employer not found", employer);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                res = new CustomResponse(404, $"employer not found", null);
+                res = new CustomResponse(500, ex.Message);
             }
             return res;
         }
