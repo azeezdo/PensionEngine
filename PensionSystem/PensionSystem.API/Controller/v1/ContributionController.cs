@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using PensionSystem.Application.DTOs;
+using PensionSystem.Domain.Entities;
 using PensionSystem.Domain.interfaces.IService;
 
 namespace PensionSystem.API.Controller.v1;
@@ -16,7 +17,7 @@ public class ContributionController : ControllerBase
         _contributionService = contributionService;
     }
     [HttpPost("addcontribution")]
-    public async Task<IActionResult> AddContribution( [FromBody]CreateContributionDto Dto)
+    public async Task<IActionResult> AddContribution( [FromBody]Contribution Dto)
     {
         if(ModelState.IsValid)
         {

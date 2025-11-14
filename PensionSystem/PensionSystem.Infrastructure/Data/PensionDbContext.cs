@@ -54,32 +54,5 @@ public class PensionDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-  /*  public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        var now = DateTime.UtcNow;
-
-        foreach (var entry in ChangeTracker.Entries<BaseEntity>())
-        {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.CreatedAt = now;
-                entry.Entity.UpdatedAt = now;
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                entry.Entity.UpdatedAt = now;
-            }
-
-            if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
-            {
-                var action = entry.State == EntityState.Added ? "Created" : entry.State == EntityState.Modified ? "Updated" : "Deleted";
-                var json = JsonSerializer.Serialize(entry.Entity);
-                var hist = new TransactionHistory(entry.Entity.Id, entry.Entity.GetType().Name, action, json);
-                TransactionHistories.Add(hist);
-            }
-            
-        }
-
-        return await base.SaveChangesAsync(cancellationToken);
-    }*/
+ 
 }

@@ -9,13 +9,14 @@ public class Member : BaseEntity
     public string? PhoneNumber { get; private set; }
     public bool IsDeleted { get; private set; } = false;
     public Guid? EmployerId { get; private set; }
+    public bool IsBenefitEligible { get; set; }
 
     private readonly List<Contribution> _contributions = new();
     public IReadOnlyCollection<Contribution> Contributions => _contributions.AsReadOnly();
 
-    protected Member() { }
+    public Member() { }
 
-    public Member(string firstName, string lastName, DateOnly dateOfBirth, string email, string? phoneNumber)
+    public Member(string firstName, string lastName, DateOnly dateOfBirth, string email, string? phoneNumber, bool isBenefitEligible)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -23,6 +24,7 @@ public class Member : BaseEntity
         Email = email;
         PhoneNumber = phoneNumber;
         CreatedAt = DateTime.UtcNow;
+        IsBenefitEligible = isBenefitEligible;
     }
 
     public void Update(string firstName, string lastName, DateOnly dateOfBirth, string email, string? phoneNumber)

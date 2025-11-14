@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PensionSystem.Domain.Entities;
 using PensionSystem.Domain.interfaces;
 using PensionSystem.Domain.interfaces.IService;
@@ -11,10 +12,21 @@ public class BenefitService : IBenefitService
 
     public async Task<Benefit> CalculateBenefitAsync(Guid memberId)
     {
+       
         var total = await _uow.contributionRepo.SumContributions(memberId, null);
-        var amount = total * 0.6m;
-        var eligible = total > 0;
-        var benefit = new Benefit(memberId, "Basic", DateTime.UtcNow, eligible, amount);
+        bool eligible = total >= 100000;
+
+        var benefit = new Benefit
+        {
+            MemberId = memberId,
+            TotalContribution = total,
+            Amount = eligible ? total * 0.1m : 0, // 10% benefit rate
+            EligibilityStatus = eligible,
+            CalculationDate = DateTime.UtcNow
+        };
+
         return benefit;
+
+      
     }
 }

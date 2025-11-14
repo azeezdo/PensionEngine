@@ -20,7 +20,7 @@ public class MemberService : IMemberService
             var existMember = await _uow.memberRepo.GetByExpressionAsync(x => x.Email == dto.Email);
             if (existMember == null)
             {
-                var member = new Member(dto.FirstName, dto.LastName, dto.DateOfBirth, dto.Email, dto.PhoneNumber);
+                var member = new Member(dto.FirstName, dto.LastName, dto.DateOfBirth, dto.Email, dto.PhoneNumber, dto.IsBenefitEligible );
                 await _uow.memberRepo.AddAsync(member);
                 await _uow.CompleteAsync();
                 res = new CustomResponse(200, "Member Successfully Created", null);
@@ -51,9 +51,9 @@ public class MemberService : IMemberService
             await _uow.CompleteAsync();
             res = new CustomResponse(200,  "Member Successfully Updated", null);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-           
+            res = new CustomResponse(500, ex.Message);
         }
         return res;
     }
@@ -73,9 +73,9 @@ public class MemberService : IMemberService
             await _uow.CompleteAsync();
             res = new CustomResponse(200,  "Member Successfully Deleted", null);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            
+            res = new CustomResponse(500, ex.Message);
         }
 
         return res;
@@ -111,9 +111,9 @@ public class MemberService : IMemberService
             }
 
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-           res = new CustomResponse(404, $"Members not found", null);
+            res = new CustomResponse(500, ex.Message);
         }
         return res;
     }
@@ -141,9 +141,9 @@ public class MemberService : IMemberService
                 res = new CustomResponse(404, $"Members not found", member);
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            res = new CustomResponse(404, $"Members not found", null);
+            res = new CustomResponse(500, ex.Message);
         }
         return res;
     }

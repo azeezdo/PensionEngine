@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<MonthlyContributionRule>();
         services.AddScoped<BackgroundJobsService>();
+        services.AddScoped<BenefitEligibilityService>();
 
         return services;
     }
