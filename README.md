@@ -27,7 +27,7 @@ src/
     └── Pension.Tests/        # Unit and Integration Tests (NUnit)
 ```
 
-### 🧩 Key Components
+## Key Components
 
 | Layer | Responsibility | Technologies |
 |-------|----------------|---------------|
@@ -38,10 +38,10 @@ src/
 
 ---
 
-## ⚙️ Project Setup Instructions
+## Project Setup Instructions
 
 ## Prerequisites
-- [.NET 7 SDK](https://dotnet.microsoft.com/download)
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
 - [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/) or VS Code
 - [Hangfire Dashboard](https://www.hangfire.io/)
@@ -81,9 +81,9 @@ src/
 
 ---
 
-## 📘 API Documentation
+## API Documentation
 
-### 🔹 Member Management
+## Member Management
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
 | `POST` | `/api/members` | Register a new member |
@@ -104,7 +104,7 @@ src/
 
 ---
 
-### 🔹 Contribution Management
+## Contribution Management
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
 | `POST` | `/api/contributions` | Add new contribution (Monthly/Voluntary) |
@@ -124,7 +124,7 @@ src/
 
 ---
 
-### 🔹 Benefit Management
+## Benefit Management
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
 | `GET` | `/api/benefits/{memberId}` | Retrieve member benefit details |
